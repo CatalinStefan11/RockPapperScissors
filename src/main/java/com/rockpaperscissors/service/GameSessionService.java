@@ -4,6 +4,8 @@ import com.rockpaperscissors.exception.customexceptions.InvalidOperationExceptio
 import com.rockpaperscissors.exception.customexceptions.NotFoundException;
 import com.rockpaperscissors.model.actors.Player;
 import com.rockpaperscissors.model.entities.GameSession;
+import com.rockpaperscissors.model.entities.Round;
+import com.rockpaperscissors.model.entities.Turn;
 import com.rockpaperscissors.model.gameplay.Invite;
 import com.rockpaperscissors.repository.GameSessionRepository;
 import com.rockpaperscissors.repository.RoundRepository;
@@ -33,7 +35,7 @@ public class GameSessionService {
 
     @Logger("Session & latest round updated successfully")
     public GameSession updateSessionAndLatestRound(GameSession session) {
-        if(!session.rounds().isEmpty()){
+        if (!session.rounds().isEmpty()) {
             roundRepository.saveAndFlush(session.latestRound());
         }
         return sessionRepository.saveAndFlush(session);
@@ -62,8 +64,21 @@ public class GameSessionService {
     public GameSession getSession(String inviteCode) {
         return sessionRepository
                 .findByInviteCode(inviteCode)
-                .orElseThrow(() -> new NotFoundException("Session with invite code " + inviteCode + " not found"));
+                .orElseThrow(() -> {
+                    log.warn("Session with inviteCode {} not found!", inviteCode);
+                    return new NotFoundException("Session with invite code " + inviteCode + " not found");
+                });
     }
 
+    @Logger("New round created successfully")
+    public void createNewRound(Turn turn, GameSession gameSession) {
+        gameSession.addRound(new Round(turn));
+        updateSessionAndLatestRound(gameSession);
+    }
 
+    @Logger("Second turn was pushed successfully")
+    public void pushMoveAndUpdateRound(Round actualRound, Turn move) {
+        actualRound.pushMove(move);
+        roundRepository.saveAndFlush(actualRound);
+    }
 }

@@ -13,27 +13,5 @@ import java.util.Optional;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
-    @Override
-    <S extends Player> S save(S entity);
-
-    @Override
-    <S extends Player> S saveAndFlush(S entity);
-
-    @Override
-    Player getById(Long id);
-
-    @Override
-    Optional<Player> findById(Long id);
-
-    @Override
-    void delete(Player entity);
-
     Optional<Player> findByPlayerName(String playerName);
-
-    @Modifying
-    @Transactional
-    @Query("update Player p set p.currentState = :state where p.id = :id")
-    void changePlayerState(Long id, Player.PlayerState state);
-
-
 }

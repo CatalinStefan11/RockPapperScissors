@@ -63,9 +63,8 @@ public class Round {
         } else {
             this.secondMove = turn;
             evaluate(this, this.firstMove, this.secondMove);
-            if (!this.isTie()) {
-                changeStateTo(GameState.OVER);
-            }
+            changeStateTo(GameState.OVER);
+
         }
     }
 

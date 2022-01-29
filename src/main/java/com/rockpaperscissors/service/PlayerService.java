@@ -55,7 +55,7 @@ public class PlayerService {
         Player.PlayerState currentStateOfPlayer = player.getCurrentState();
         if (PLAYING.equals(newState) && WAITING.equals(currentStateOfPlayer)) {
             log.warn("Player {} cannot play while he is in state waiting!", existingPlayerName);
-            throw new GameException("Both players should be READY before starting PLAY");
+            throw new GameException("Players should be ready before starting to play");
         }
         if (currentStateOfPlayer.equals(newState)) {
             log.warn("Player {} is already in state {}!", existingPlayerName, newState);

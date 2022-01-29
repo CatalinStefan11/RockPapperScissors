@@ -20,7 +20,7 @@ public class GameController {
 
     @PostMapping(value = "/play", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity play(@RequestBody PlayRequest playRequest) {
-        gameEngineService.play(playRequest);
+        gameEngineService.playMove(playRequest);
         return ResponseEntity.ok().body("");
     }
 }

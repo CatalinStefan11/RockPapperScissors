@@ -62,7 +62,7 @@ public class GameSession {
         this.inviteCode = invite.getInviteCode();
         this.firstPlayer = invite.getPlayer();
         this.gameState = State.WAITING;
-        this.rounds = new ArrayList<>(1);
+        this.rounds = new ArrayList<>();
     }
 
     public void addOpponent(Player player) {

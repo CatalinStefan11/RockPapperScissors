@@ -8,9 +8,5 @@ import java.util.Optional;
 
 public interface GameSessionRepository extends JpaRepository<GameSession, Long> {
 
-    @Override
-    <S extends GameSession> S save(S entity);
-
     Optional<GameSession> findByInviteCode(String inviteCode);
-
 }

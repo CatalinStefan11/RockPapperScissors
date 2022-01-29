@@ -1,6 +1,7 @@
 package com.rockpaperscissors.exception;
 
 import com.rockpaperscissors.exception.customexceptions.AlreadyExistsException;
+import com.rockpaperscissors.exception.customexceptions.GameException;
 import com.rockpaperscissors.exception.customexceptions.InvalidOperationException;
 import com.rockpaperscissors.exception.customexceptions.NotFoundException;
 import com.rockpaperscissors.exception.model.ClientError;
@@ -29,6 +30,17 @@ public class AppExceptionHandler {
 
     }
 
+    @ExceptionHandler(value = GameException.class)
+    public ResponseEntity<ClientError> exception(GameException exception) {
+
+        log.warn("An exception has occurred: {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ClientError(LocalDateTime.now(),
+                        exception.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value()));
+
+    }
+
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<ClientError> exception(NotFoundException exception) {
 
@@ -44,10 +56,10 @@ public class AppExceptionHandler {
     public ResponseEntity<ClientError> exception(InvalidOperationException exception) {
 
         log.warn("An exception has occurred: {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ClientError(LocalDateTime.now(),
                         exception.getMessage(),
-                        HttpStatus.NOT_FOUND.value()));
+                        HttpStatus.BAD_REQUEST.value()));
 
     }
 
