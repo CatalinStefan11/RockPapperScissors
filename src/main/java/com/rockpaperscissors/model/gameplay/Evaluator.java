@@ -1,6 +1,6 @@
 package com.rockpaperscissors.model.gameplay;
 
-import com.rockpaperscissors.model.entities.Result;
+import com.rockpaperscissors.model.entities.Round;
 import com.rockpaperscissors.model.entities.Turn;
 
 import java.util.Optional;
@@ -13,22 +13,20 @@ public class Evaluator {
         // package-private for tests
     }
 
-    public static Result evaluate(Turn firstTurn, Turn secondTurn) {
-        Result result = new Result();
+    public static void evaluate(Round round, Turn firstTurn, Turn secondTurn) {
         if (!firstTurn.getMove().equals(secondTurn.getMove())) {
             Optional<Move> move = evaluateOpposingMoves(firstTurn.getMove(), secondTurn.getMove());
             if (move.isPresent()) {
                 Move winningMove = move.get();
                 if (winningMove.equals(firstTurn.getMove())) {
-                    result.setWinner(firstTurn.getPlayer());
+                    round.setWinner(firstTurn.getPlayer().getPlayerName());
                 } else if (winningMove.equals(secondTurn.getMove())) {
-                    result.setWinner(secondTurn.getPlayer());
+                    round.setWinner(secondTurn.getPlayer().getPlayerName());
                 }
             }
-        } else {
-            result.setTie(true);
+        }else{
+            round.setTie(true);
         }
-        return result;
     }
 
     private static Optional<Move> evaluateOpposingMoves(Move move1, Move move2) {

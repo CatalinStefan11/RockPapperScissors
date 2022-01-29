@@ -50,7 +50,7 @@ public class PlayerService {
     }
 
     @Logger("Player changed state successfully!")
-    public void changePlayerState(String existingPlayerName, Player.PlayerState newState) {
+    public Player changePlayerState(String existingPlayerName, Player.PlayerState newState) {
         Player player = getPlayer(existingPlayerName);
         Player.PlayerState currentStateOfPlayer = player.getCurrentState();
         if (PLAYING.equals(newState) && WAITING.equals(currentStateOfPlayer)) {
@@ -62,7 +62,7 @@ public class PlayerService {
             throw new AlreadyExistsException("Player " + existingPlayerName + " is already in state: " + newState);
         }
         player.setCurrentState(newState);
-        playerRepository.saveAndFlush(player);
+        return playerRepository.saveAndFlush(player);
     }
 
 

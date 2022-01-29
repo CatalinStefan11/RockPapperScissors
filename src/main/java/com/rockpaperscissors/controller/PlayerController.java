@@ -29,9 +29,8 @@ public class PlayerController {
     }
 
     @PutMapping(value = "/readyplayer/{playername}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> ready(@PathVariable("playername") String playerName) {
-        playerService.changePlayerState(playerName, READY);
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<Player> ready(@PathVariable("playername") String playerName) {
+        return new ResponseEntity<>(playerService.changePlayerState(playerName, READY), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/player/{playerName}", produces = APPLICATION_JSON_VALUE)

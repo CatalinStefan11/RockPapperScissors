@@ -1,5 +1,6 @@
 package com.rockpaperscissors.model.actors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Player {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private long id;
 
     private String playerName;

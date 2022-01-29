@@ -1,5 +1,6 @@
 package com.rockpaperscissors.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rockpaperscissors.exception.customexceptions.InvalidOperationException;
 import com.rockpaperscissors.model.actors.Player;
 import com.rockpaperscissors.model.gameplay.Move;
@@ -21,6 +22,7 @@ public class Turn {
     @Id
     @GeneratedValue
     @Column(name = "id")
+    @JsonIgnore
     private Long turnId;
 
     @OneToOne(
@@ -32,7 +34,6 @@ public class Turn {
 
     @Enumerated(EnumType.STRING)
     private Move move;
-
 
     public Turn(Player player, Move move) {
         if (player == null || move == null) {

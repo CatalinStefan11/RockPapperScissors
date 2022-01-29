@@ -1,10 +1,13 @@
 package com.rockpaperscissors.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rockpaperscissors.exception.customexceptions.InvalidOperationException;
 import com.rockpaperscissors.model.actors.Player;
 import com.rockpaperscissors.model.gameplay.Invite;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,12 +19,14 @@ import java.util.List;
 @Entity
 @Table(name = "game_sessions")
 @Getter
+@Setter
 @NoArgsConstructor
 public class GameSession {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
+    @JsonIgnore
     private long sessionId;
 
     private String inviteCode;
@@ -50,28 +55,14 @@ public class GameSession {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "gameSession")
+    @Setter(AccessLevel.NONE)
     private List<Round> rounds;
-
-    @OneToOne(
-            fetch = FetchType.EAGER,
-            orphanRemoval = true)
-    @JoinColumn(name = "winner")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Player winner;
-
-    private boolean tie;
-
 
     public GameSession(Invite invite) {
         this.inviteCode = invite.getInviteCode();
         this.firstPlayer = invite.getPlayer();
         this.gameState = State.WAITING;
         this.rounds = new ArrayList<>(1);
-    }
-
-
-    public void changeStateTo(State state) {
-        this.gameState = state;
     }
 
     public void addOpponent(Player player) {
@@ -86,22 +77,12 @@ public class GameSession {
         rounds.add(round);
     }
 
-
     public Round latestRound() {
         if (rounds.isEmpty()) {
             throw new InvalidOperationException("No rounds have been started yet");
         }
         return rounds.get(rounds.size() - 1);
     }
-
-    public void setWinner(Player winner) {
-        this.winner = winner;
-    }
-
-    public void setTie(boolean tie) {
-        this.tie = tie;
-    }
-
 
     public enum State {
         WAITING, ACCEPTED, PLAYING

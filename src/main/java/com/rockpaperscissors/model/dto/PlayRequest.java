@@ -1,14 +1,15 @@
 package com.rockpaperscissors.model.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Getter
 public class PlayRequest {
 
   private String playerName;
   private String inviteCode;
   private String move;
-
-  // for deserialisation
-  public PlayRequest() {
-  }
 
   public PlayRequest(String playerName, String inviteCode, String move) {
     if (playerName == null || inviteCode == null || move == null) {
@@ -20,15 +21,4 @@ public class PlayRequest {
     this.move = move;
   }
 
-  public String getPlayerName() {
-    return playerName;
-  }
-
-  public String getInviteCode() {
-    return this.inviteCode;
-  }
-
-  public String getMove() {
-    return move;
-  }
 }
