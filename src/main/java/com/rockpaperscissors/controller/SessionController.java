@@ -1,7 +1,8 @@
 package com.rockpaperscissors.controller;
 
 import com.rockpaperscissors.model.actors.Player;
-import com.rockpaperscissors.model.gameplay.GameSession;
+import com.rockpaperscissors.model.dto.PlayRequest;
+import com.rockpaperscissors.model.entities.GameSession;
 import com.rockpaperscissors.model.gameplay.Invite;
 import com.rockpaperscissors.service.GameSessionService;
 import com.rockpaperscissors.service.PlayerService;
@@ -44,5 +45,6 @@ public class SessionController {
                 HttpStatus.OK);
 
     }
+
 
 }

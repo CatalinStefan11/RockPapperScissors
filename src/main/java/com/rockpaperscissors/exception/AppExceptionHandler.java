@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 import static com.rockpaperscissors.utils.AppConstants.GENERIC_ERROR_MESSAGE;
-import static com.rockpaperscissors.utils.AppConstants.NOT_FOUND_ERROR_MESSAGE;
 
 @RestControllerAdvice
 @Slf4j
@@ -39,7 +38,6 @@ public class AppExceptionHandler {
                         exception.getMessage(),
                         HttpStatus.NOT_FOUND.value()));
 
-
     }
 
     @ExceptionHandler(value = InvalidOperationException.class)
@@ -51,7 +49,6 @@ public class AppExceptionHandler {
                         exception.getMessage(),
                         HttpStatus.NOT_FOUND.value()));
 
-
     }
 
     @ExceptionHandler(value = AlreadyExistsException.class)
@@ -62,7 +59,6 @@ public class AppExceptionHandler {
                 .body(new ClientError(LocalDateTime.now(),
                         exception.getMessage(),
                         HttpStatus.BAD_REQUEST.value()));
-
 
     }
 

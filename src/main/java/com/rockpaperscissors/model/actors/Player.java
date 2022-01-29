@@ -1,8 +1,8 @@
 package com.rockpaperscissors.model.actors;
 
-import com.rockpaperscissors.model.gameplay.GameSession;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -10,8 +10,9 @@ import javax.persistence.*;
 
 @Getter
 @EqualsAndHashCode
-@Table(name = "players")
 @Entity
+@Table(name = "players")
+@NoArgsConstructor
 public class Player {
 
     @Id
@@ -30,10 +31,6 @@ public class Player {
         }
         this.playerName = name;
         this.currentState = PlayerState.WAITING;
-    }
-
-    public Player() {
-
     }
 
     public enum PlayerState {

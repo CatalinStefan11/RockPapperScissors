@@ -5,6 +5,7 @@ import com.rockpaperscissors.exception.customexceptions.GameException;
 import com.rockpaperscissors.exception.customexceptions.NotFoundException;
 import com.rockpaperscissors.model.actors.Player;
 import com.rockpaperscissors.repository.PlayerRepository;
+import com.rockpaperscissors.utils.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    @Logger("Player created successfully!")
     public Player createPlayer(String name) {
         if (playerRepository.findByPlayerName(name).isPresent()) {
             log.warn("Player {} already exists in the database!", name);
@@ -28,11 +30,16 @@ public class PlayerService {
         return playerRepository.save(new Player(name));
     }
 
+    @Logger("Player retrieved successfully!")
     public Player getPlayer(String name) {
         return playerRepository.findByPlayerName(name)
-                .orElseThrow(() -> new NotFoundException("Player " + name + " not found"));
+                .orElseThrow(() -> {
+                    log.warn("Player {} not found in the database!", name);
+                    return new NotFoundException("Player " + name + " not found");
+                });
     }
 
+    @Logger("Player deleted successfully!")
     public void deletePlayer(String name) {
         Player player = getPlayer(name);
         if (PLAYING.equals(player.getCurrentState())) {
@@ -42,6 +49,7 @@ public class PlayerService {
         playerRepository.delete(player);
     }
 
+    @Logger("Player changed state successfully!")
     public void changePlayerState(String existingPlayerName, Player.PlayerState newState) {
         Player player = getPlayer(existingPlayerName);
         Player.PlayerState currentStateOfPlayer = player.getCurrentState();
@@ -51,10 +59,10 @@ public class PlayerService {
         }
         if (currentStateOfPlayer.equals(newState)) {
             log.warn("Player {} is already in state {}!", existingPlayerName, newState);
-            throw new AlreadyExistsException("Player" + existingPlayerName + " is already in state: " + newState);
+            throw new AlreadyExistsException("Player " + existingPlayerName + " is already in state: " + newState);
         }
-
-        playerRepository.changePlayerState(player.getId(), newState);
+        player.setCurrentState(newState);
+        playerRepository.saveAndFlush(player);
     }
 
 

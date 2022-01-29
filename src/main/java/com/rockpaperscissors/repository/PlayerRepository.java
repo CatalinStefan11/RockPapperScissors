@@ -17,7 +17,7 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     <S extends Player> S save(S entity);
 
     @Override
-    List<Player> findAll();
+    <S extends Player> S saveAndFlush(S entity);
 
     @Override
     Player getById(Long id);
