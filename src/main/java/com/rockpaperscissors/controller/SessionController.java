@@ -23,14 +23,14 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    @PostMapping(value = "/createInvite/{playerName}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameSession> createInvite(@PathVariable("playerName") String inviter) {
+    @PostMapping(value = "/create-game/{playerName}", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<GameSession> createSession(@PathVariable("playerName") String inviter) {
         Player player = playerService.getPlayer(inviter);
         return new ResponseEntity<>(sessionService.createSessionFromInvite(new Invite(player)),
                 HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/acceptInvite/{inviteCode}/{playerName}", produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/accept-invite/{sessionCode}/{playerName}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<GameSession> acceptInvite(@PathVariable("inviteCode") String inviteCode,
                                                     @PathVariable("playerName") String playerName) {
         Player player = playerService.getPlayer(playerName);
@@ -38,8 +38,8 @@ public class SessionController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = "/session/{inviteCode}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameSession> session(@PathVariable("inviteCode") String inviteCode) {
+    @GetMapping(value = "/result/{sessionCode}", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<GameSession> session(@PathVariable("sessionCode") String inviteCode) {
         return new ResponseEntity<>(sessionService.getSession(inviteCode),
                 HttpStatus.OK);
     }

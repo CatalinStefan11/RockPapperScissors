@@ -1,5 +1,6 @@
 package com.rockpaperscissors.service;
 
+import com.rockpaperscissors.exception.customexceptions.GameException;
 import com.rockpaperscissors.exception.customexceptions.InvalidOperationException;
 import com.rockpaperscissors.exception.customexceptions.NotFoundException;
 import com.rockpaperscissors.model.actors.Player;
@@ -14,7 +15,7 @@ import com.rockpaperscissors.utils.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-
+import static com.rockpaperscissors.model.entities.GameSession.State.PLAYING;
 
 @Service
 @Slf4j
@@ -50,7 +51,7 @@ public class GameSessionService {
     @Logger("Invitation accepted successfully")
     public GameSession acceptInvite(Player player, String inviteCode) {
         GameSession gameSession = sessionRepository
-                .findByInviteCode(inviteCode)
+                .findBySessionCode(inviteCode)
                 .orElseThrow(() -> {
                     log.warn("Session with invite code {} not found in the database!", inviteCode);
                     return new NotFoundException("Session with invite code " + inviteCode + " not found");
@@ -69,7 +70,7 @@ public class GameSessionService {
     @Logger("Session retrieved successfully")
     public GameSession getSession(String inviteCode) {
         return sessionRepository
-                .findByInviteCode(inviteCode)
+                .findBySessionCode(inviteCode)
                 .orElseThrow(() -> {
                     log.warn("Session with inviteCode {} not found!", inviteCode);
                     return new NotFoundException("Session with invite code " + inviteCode + " not found");
@@ -96,6 +97,20 @@ public class GameSessionService {
 
         }
         roundRepository.saveAndFlush(actualRound);
+    }
+
+    @Logger("Session retrieved successfully")
+    public GameSession retrieveSessionAndSetStatePlaying(String invitationCode) {
+        GameSession session = getSession(invitationCode);
+        if(session.getGameState().equals(GameSession.State.WAITING)){
+            log.warn("Attempt to play while invitation has not been accepted yet!");
+            throw new GameException("The invite should be accepted by the second player in order to play!");
+        }
+        if (!session.getGameState().equals(PLAYING)) {
+            log.info("Session with id {} is now in state PLAYING!", session.getSessionId());
+            session.setGameState(PLAYING);
+        }
+        return session;
     }
 
 }

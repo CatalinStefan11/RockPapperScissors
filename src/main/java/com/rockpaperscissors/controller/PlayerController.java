@@ -28,7 +28,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerService.createPlayer(playerName), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/readyplayer/{playername}", produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/ready-player/{playername}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Player> ready(@PathVariable("playername") String playerName) {
         return new ResponseEntity<>(playerService.changePlayerState(playerName, READY), HttpStatus.OK);
     }

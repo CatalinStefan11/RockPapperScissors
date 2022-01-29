@@ -29,7 +29,7 @@ public class GameSession {
     @JsonIgnore
     private long sessionId;
 
-    private String inviteCode;
+    private String sessionCode;
 
     @OneToOne(
             fetch = FetchType.EAGER,
@@ -59,7 +59,7 @@ public class GameSession {
     private List<Round> rounds;
 
     public GameSession(Invite invite) {
-        this.inviteCode = invite.getInviteCode();
+        this.sessionCode = invite.getInviteCode();
         this.firstPlayer = invite.getPlayer();
         this.gameState = State.WAITING;
         this.rounds = new ArrayList<>();
@@ -85,7 +85,7 @@ public class GameSession {
     }
 
     public enum State {
-        WAITING, ACCEPTED, PLAYING
+        WAITING, ACCEPTED, PLAYING, OVER
     }
 
 }

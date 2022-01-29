@@ -4,7 +4,11 @@ import com.rockpaperscissors.exception.customexceptions.AlreadyExistsException;
 import com.rockpaperscissors.exception.customexceptions.GameException;
 import com.rockpaperscissors.exception.customexceptions.NotFoundException;
 import com.rockpaperscissors.model.actors.Player;
+import com.rockpaperscissors.model.dto.PlayRequest;
+import com.rockpaperscissors.model.entities.Turn;
+import com.rockpaperscissors.model.gameplay.Move;
 import com.rockpaperscissors.repository.PlayerRepository;
+import com.rockpaperscissors.repository.TurnRepository;
 import com.rockpaperscissors.utils.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +21,11 @@ public class PlayerService {
 
     private PlayerRepository playerRepository;
 
-    public PlayerService(PlayerRepository playerRepository) {
+    private TurnRepository turnRepository;
+
+    public PlayerService(PlayerRepository playerRepository, TurnRepository turnRepository) {
         this.playerRepository = playerRepository;
+        this.turnRepository = turnRepository;
     }
 
     @Logger("Player created successfully!")
@@ -63,6 +70,24 @@ public class PlayerService {
         }
         player.setCurrentState(newState);
         return playerRepository.saveAndFlush(player);
+    }
+
+    @Logger("Turn saved to the database successfully")
+    public Turn createTurnFromRequest(PlayRequest request) {
+        Move move = null;
+        try {
+            move = Enum.valueOf(Move.class, request.getMove().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            log.warn("An illegal move was made!");
+            throw new GameException("Illegal move! A move should be ROCK / PAPER / SCISSORS!");
+        }
+        Player player = changePlayerState(
+                request.getPlayerName(), Player.PlayerState.PLAYING);
+
+        Turn turn = new Turn(player, move);
+        turnRepository.save(turn);
+
+        return turn;
     }
 
 

@@ -9,6 +9,8 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+  profiles:
+    active: PlayerVsComputer
 
 logging:
   level:

@@ -1,7 +1,7 @@
 package com.rockpaperscissors.controller;
 
 import com.rockpaperscissors.model.dto.PlayRequest;
-import com.rockpaperscissors.service.GameEngineService;
+import com.rockpaperscissors.service.GameService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,15 +12,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 public class GameController {
 
-    private GameEngineService gameEngineService;
+    private GameService gameService;
 
-    public GameController(GameEngineService gameEngineService) {
-        this.gameEngineService = gameEngineService;
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @PostMapping(value = "/play", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity play(@RequestBody PlayRequest playRequest) {
-        gameEngineService.playMove(playRequest);
+        gameService.playMove(playRequest);
         return ResponseEntity.ok().body("");
     }
 }
