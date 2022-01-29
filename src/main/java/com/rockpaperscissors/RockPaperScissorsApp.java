@@ -1,6 +1,5 @@
 package com.rockpaperscissors;
 
-import com.rockpaperscissors.model.actors.Player;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

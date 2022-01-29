@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rockpaperscissors.exception.customexceptions.InvalidOperationException;
 import com.rockpaperscissors.model.actors.Player;
 import com.rockpaperscissors.model.gameplay.Move;
-import lombok.AllArgsConstructor;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;

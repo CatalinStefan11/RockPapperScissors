@@ -34,10 +34,10 @@ public class AppExceptionHandler {
     public ResponseEntity<ClientError> exception(GameException exception) {
 
         log.warn("An exception has occurred: {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ClientError(LocalDateTime.now(),
                         exception.getMessage(),
-                        HttpStatus.INTERNAL_SERVER_ERROR.value()));
+                        HttpStatus.BAD_REQUEST.value()));
 
     }
 

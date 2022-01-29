@@ -1,16 +1,7 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
 server:
   port: 8080
 
 spring:
-  output:
-    ansi:
-      enabled: ALWAYS
   h2:
     console.enabled: true
   datasource:
@@ -18,8 +9,6 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
 logging:
   level:

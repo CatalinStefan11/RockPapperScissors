@@ -7,12 +7,10 @@ import com.rockpaperscissors.model.entities.GameSession;
 import com.rockpaperscissors.model.entities.Round;
 import com.rockpaperscissors.model.entities.Turn;
 import com.rockpaperscissors.model.gameplay.Move;
-import com.rockpaperscissors.repository.RoundRepository;
 import com.rockpaperscissors.repository.TurnRepository;
 import com.rockpaperscissors.utils.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 
 import static com.rockpaperscissors.model.actors.Player.PlayerState.WAITING;
 import static com.rockpaperscissors.model.entities.GameSession.State.PLAYING;
@@ -41,19 +39,12 @@ public class GameEngineService {
 
         arePlayersNotReady(currentSession.getFirstPlayer(), currentSession.getSecondPlayer());
 
-        Player player = playerService.changePlayerState(
-                playRequest.getPlayerName(), Player.PlayerState.PLAYING);
-
-        final Turn turn = new Turn(player, Enum.valueOf(Move.class, playRequest.getMove()));
-        turnRepository.save(turn);
-
-        evaluateRound(turn, currentSession);
+        evaluateRound(createTurnFromRequest(playRequest), currentSession);
 
         if (currentSession.latestRound().getState().equals(OVER)) {
             roundIsOverActions(currentSession);
         }
     }
-
 
     @Logger("Players state verified")
     private void arePlayersNotReady(Player playerOne, Player playerTwo) {
@@ -67,6 +58,10 @@ public class GameEngineService {
     @Logger("Session retrieved successfully")
     private GameSession retrieveSessionAndSetStatePlaying(String invitationCode) {
         GameSession session = sessionService.getSession(invitationCode);
+        if(session.getGameState().equals(GameSession.State.WAITING)){
+            log.warn("Attempt to play while invitation has not been accepted yet!");
+            throw new GameException("The invite should be accepted by the second player in order to play!");
+        }
         if (!session.getGameState().equals(PLAYING)) {
             log.info("Session with id {} is now in state PLAYING!", session.getSessionId());
             session.setGameState(PLAYING);
@@ -96,5 +91,23 @@ public class GameEngineService {
 
         playerService.changePlayerState(session.getFirstPlayer().getPlayerName(), WAITING);
         playerService.changePlayerState(session.getSecondPlayer().getPlayerName(), WAITING);
+    }
+
+    @Logger("Turn saved to the database successfully")
+    private Turn createTurnFromRequest(PlayRequest request) {
+        Move move = null;
+        try {
+            move = Enum.valueOf(Move.class, request.getMove().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            log.warn("An illegal move was made!");
+            throw new GameException("Illegal move! A move should be ROCK / PAPER / SCISSORS!");
+        }
+        Player player = playerService.changePlayerState(
+                request.getPlayerName(), Player.PlayerState.PLAYING);
+
+        Turn turn = new Turn(player, move);
+        turnRepository.save(turn);
+
+        return turn;
     }
 }

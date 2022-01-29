@@ -9,9 +9,11 @@ import com.rockpaperscissors.model.entities.Turn;
 import com.rockpaperscissors.model.gameplay.Invite;
 import com.rockpaperscissors.repository.GameSessionRepository;
 import com.rockpaperscissors.repository.RoundRepository;
+import com.rockpaperscissors.utils.RoundEvaluator;
 import com.rockpaperscissors.utils.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 
 
 @Service
@@ -22,9 +24,13 @@ public class GameSessionService {
 
     RoundRepository roundRepository;
 
-    public GameSessionService(GameSessionRepository sessionRepository, RoundRepository roundRepository) {
+    RoundEvaluator roundEvaluator;
+
+    public GameSessionService(GameSessionRepository sessionRepository, RoundRepository roundRepository,
+                              RoundEvaluator roundEvaluator) {
         this.sessionRepository = sessionRepository;
         this.roundRepository = roundRepository;
+        this.roundEvaluator = roundEvaluator;
     }
 
     @Logger("Session created successfully")
@@ -77,8 +83,19 @@ public class GameSessionService {
     }
 
     @Logger("Second turn was pushed successfully")
-    public void pushMoveAndUpdateRound(Round actualRound, Turn move) {
-        actualRound.pushMove(move);
+    public void pushMoveAndUpdateRound(Round actualRound, Turn turn) {
+
+        Player currentPlayer = turn.getPlayer();
+        if (actualRound.getFirstMove().getPlayer().equals(currentPlayer)) {
+            throw new InvalidOperationException(
+                    "The same player cannot play again without the opponent making a move");
+        } else {
+            actualRound.setSecondMove(turn);
+            roundEvaluator.evaluate(actualRound);
+            actualRound.changeStateTo(Round.GameState.OVER);
+
+        }
         roundRepository.saveAndFlush(actualRound);
     }
+
 }

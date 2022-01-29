@@ -1,7 +1,6 @@
 package com.rockpaperscissors.controller;
 
 import com.rockpaperscissors.model.actors.Player;
-import com.rockpaperscissors.model.dto.PlayRequest;
 import com.rockpaperscissors.model.entities.GameSession;
 import com.rockpaperscissors.model.gameplay.Invite;
 import com.rockpaperscissors.service.GameSessionService;
@@ -43,7 +42,6 @@ public class SessionController {
     public ResponseEntity<GameSession> session(@PathVariable("inviteCode") String inviteCode) {
         return new ResponseEntity<>(sessionService.getSession(inviteCode),
                 HttpStatus.OK);
-
     }
 
 

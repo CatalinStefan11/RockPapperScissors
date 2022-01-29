@@ -27,7 +27,7 @@ public class PlayerService {
             log.warn("Player {} already exists in the database!", name);
             throw new AlreadyExistsException(name + " already exists");
         }
-        return playerRepository.save(new Player(name));
+        return playerRepository.saveAndFlush(new Player(name));
     }
 
     @Logger("Player retrieved successfully!")
