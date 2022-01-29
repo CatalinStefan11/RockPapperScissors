@@ -74,14 +74,6 @@ public class GameSession {
         this.gameState = state;
     }
 
-    public Player getFirstPlayer() {
-        return this.firstPlayer;
-    }
-
-    public Player getSecondPlayer() {
-        return this.secondPlayer;
-    }
-
     public void addOpponent(Player player) {
         this.secondPlayer = player;
     }
@@ -92,14 +84,6 @@ public class GameSession {
 
     public void addRound(Round round) {
         rounds.add(round);
-    }
-
-    public boolean isRoundsEmpty(){
-        return rounds.isEmpty();
-    }
-
-    public int lastRoundIdx(){
-        return rounds.size() - 1;
     }
 
 
