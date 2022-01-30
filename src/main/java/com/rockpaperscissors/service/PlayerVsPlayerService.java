@@ -6,7 +6,7 @@ import com.rockpaperscissors.model.dto.PlayRequest;
 import com.rockpaperscissors.model.entities.GameSession;
 import com.rockpaperscissors.model.entities.Round;
 import com.rockpaperscissors.model.entities.Turn;
-import com.rockpaperscissors.utils.logging.Logger;
+import com.rockpaperscissors.aop.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class PlayerVsPlayerService implements GameService {
     @Logger("A player has just made a move successfully")
     public void playMove(PlayRequest playRequest) {
         GameSession currentSession = sessionService
-                .retrieveSessionAndSetStatePlaying(playRequest.getInviteCode());
+                .retrieveSessionAndSetStatePlaying(playRequest.getSessionCode());
 
         arePlayersNotReady(currentSession.getFirstPlayer(), currentSession.getSecondPlayer());
 
@@ -67,7 +67,7 @@ public class PlayerVsPlayerService implements GameService {
     }
 
     @Logger("A round is over! Players and game session are now waiting fur further rounds!")
-    private void roundIsOverActions(GameSession session) {
+    public void roundIsOverActions(GameSession session) {
         session.setGameState(GameSession.State.OVER);
         sessionService.updateSessionAndLatestRound(session);
 

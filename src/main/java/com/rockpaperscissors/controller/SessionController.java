@@ -5,6 +5,7 @@ import com.rockpaperscissors.model.entities.GameSession;
 import com.rockpaperscissors.model.gameplay.Invite;
 import com.rockpaperscissors.service.GameSessionService;
 import com.rockpaperscissors.service.PlayerService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +29,6 @@ public class SessionController {
         Player player = playerService.getPlayer(inviter);
         return new ResponseEntity<>(sessionService.createSessionFromInvite(new Invite(player)),
                 HttpStatus.CREATED);
-    }
-
-    @PutMapping(value = "/accept-invite/{sessionCode}/{playerName}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameSession> acceptInvite(@PathVariable("inviteCode") String inviteCode,
-                                                    @PathVariable("playerName") String playerName) {
-        Player player = playerService.getPlayer(playerName);
-        return new ResponseEntity<>(sessionService.acceptInvite(player, inviteCode),
-                HttpStatus.OK);
     }
 
     @GetMapping(value = "/result/{sessionCode}", produces = APPLICATION_JSON_VALUE)

@@ -11,7 +11,7 @@ import com.rockpaperscissors.model.gameplay.Invite;
 import com.rockpaperscissors.repository.GameSessionRepository;
 import com.rockpaperscissors.repository.RoundRepository;
 import com.rockpaperscissors.utils.RoundEvaluator;
-import com.rockpaperscissors.utils.logging.Logger;
+import com.rockpaperscissors.aop.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +41,11 @@ public class GameSessionService {
     }
 
     @Logger("Session & latest round updated successfully")
-    public GameSession updateSessionAndLatestRound(GameSession session) {
+    public void updateSessionAndLatestRound(GameSession session) {
         if (!session.rounds().isEmpty()) {
             roundRepository.saveAndFlush(session.latestRound());
         }
-        return sessionRepository.saveAndFlush(session);
+        sessionRepository.saveAndFlush(session);
     }
 
     @Logger("Invitation accepted successfully")
@@ -102,7 +102,7 @@ public class GameSessionService {
     @Logger("Session retrieved successfully")
     public GameSession retrieveSessionAndSetStatePlaying(String invitationCode) {
         GameSession session = getSession(invitationCode);
-        if(session.getGameState().equals(GameSession.State.WAITING)){
+        if (session.getGameState().equals(GameSession.State.WAITING)) {
             log.warn("Attempt to play while invitation has not been accepted yet!");
             throw new GameException("The invite should be accepted by the second player in order to play!");
         }

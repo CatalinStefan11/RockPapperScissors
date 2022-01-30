@@ -1,4 +1,4 @@
-package com.rockpaperscissors.utils.logging;
+package com.rockpaperscissors.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Slf4j
 public class LogAop {
 
-    @AfterReturning(pointcut = "@annotation(com.rockpaperscissors.utils.logging.Logger)")
+    @AfterReturning(pointcut = "@annotation(com.rockpaperscissors.aop.Logger)")
     private static void log(JoinPoint joinPoint) {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

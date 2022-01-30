@@ -9,7 +9,7 @@ import com.rockpaperscissors.model.entities.Turn;
 import com.rockpaperscissors.model.gameplay.Move;
 import com.rockpaperscissors.repository.PlayerRepository;
 import com.rockpaperscissors.repository.TurnRepository;
-import com.rockpaperscissors.utils.logging.Logger;
+import com.rockpaperscissors.aop.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +85,7 @@ public class PlayerService {
                 request.getPlayerName(), Player.PlayerState.PLAYING);
 
         Turn turn = new Turn(player, move);
-        turnRepository.save(turn);
+        turnRepository.saveAndFlush(turn);
 
         return turn;
     }

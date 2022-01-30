@@ -1,4 +1,4 @@
-package com.rockpaperscissors.utils.logging;
+package com.rockpaperscissors.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

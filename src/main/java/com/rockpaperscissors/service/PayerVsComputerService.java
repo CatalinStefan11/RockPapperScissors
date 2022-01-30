@@ -7,7 +7,7 @@ import com.rockpaperscissors.model.entities.GameSession;
 import com.rockpaperscissors.model.entities.Turn;
 import com.rockpaperscissors.model.gameplay.Move;
 import com.rockpaperscissors.repository.TurnRepository;
-import com.rockpaperscissors.utils.logging.Logger;
+import com.rockpaperscissors.aop.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -45,9 +45,14 @@ public class PayerVsComputerService implements GameService {
         if(!computer.getCurrentState().equals(READY)){
             computer = playerService.changePlayerState(COMPUTER_PLAYER_NAME, READY);
         }
-        sessionService.acceptInvite(computer, playRequest.getInviteCode());
+        sessionService.acceptInvite(computer, playRequest.getSessionCode());
 
-        GameSession currentSession = sessionService.retrieveSessionAndSetStatePlaying(playRequest.getInviteCode());
+        GameSession currentSession = sessionService.retrieveSessionAndSetStatePlaying(playRequest.getSessionCode());
+
+        if(!playerService.getPlayer(playRequest.getPlayerName())
+                .equals(currentSession.getFirstPlayer())){
+            throw new GameException("The player that attempted to play did not create the session!");
+        }
 
         isPlayerNotReady(currentSession.getFirstPlayer());
 
@@ -74,12 +79,12 @@ public class PayerVsComputerService implements GameService {
 
     @Logger("Computer played a turn successfully")
     private Turn computerMove(Player computer) {
-        final List<Move> VALUES = List.of(Move.values());
-        final int SIZE = VALUES.size();
-        final Random RANDOM = new Random();
+        final List<Move> values = List.of(Move.values());
+        final int size = values.size();
+        final Random random = new Random();
 
-        Turn turn = new Turn(computer, VALUES.get(RANDOM.nextInt(SIZE)));
-        turnRepository.save(turn);
+        Turn turn = new Turn(computer, values.get(random.nextInt(size)));
+        turnRepository.saveAndFlush(turn);
         return turn;
     }
 
