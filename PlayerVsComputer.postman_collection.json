@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "54bad6ad-6d23-4046-8b9c-92b9176996d1",
+		"name": "PlayerVsComputer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/player/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/create-game/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"create-game",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Player ready",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/ready-player/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ready-player",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Play turn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"playerName\":\"Sofi\",\r\n    \"sessionCode\":\"1645554010202\",\r\n    \"move\":\"paper\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/play",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get result",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete player (cascade delete)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/player/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

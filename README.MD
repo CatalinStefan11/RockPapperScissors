@@ -3,7 +3,7 @@ A Spring Boot application for the game of Rock Paper Scissors. The application c
 
 ### Project details
 - Spring-Boot was chosen instead of building just a console app because it comes with a lot of preconfigured infrastructure beans and also it comes with the dependency injection mechanism
-- The application could run into a cloud infrastructure environment such as a VM and two players were able to play from different locations, or a player could play against the computer
+- The application could run into a cloud infrastructure environment such as a VM and two players would be able to play from different locations, or a player could play against the computer
 - Use the power of Spring MVC & Java 17 coupled with Spring Data Jpa for saving the data into an embedded H2 database
 - Use Spring aspect oriented programming, and a Java custom annotation for a cross-cutting concern such as logging
 - Utility of aspect oriented programming is also present in handling errors mechanism using controller advice
@@ -19,7 +19,7 @@ A Spring Boot application for the game of Rock Paper Scissors. The application c
 ```
 POST http://localhost:8080/player/Ronaldo
 ```
-- After creating a player, a new game should be crated using that player name
+- After creating a player, a new game should be created using that player name
 ```
 POST http://localhost:8080/create-game/Ronaldo
 ```
@@ -53,7 +53,7 @@ DELETE   http://localhost:8080/player/Ronaldo
 ```
 POST http://localhost:8080/player/Ronaldo
 ```
-- A second player should be crated
+- A second player should be created
 ```
 POST http://localhost:8080/player/Messi
 ```
@@ -103,16 +103,13 @@ GET   http://localhost:8080/result/1642784675716
 DELETE   http://localhost:8080/player/Ronaldo
 ```
 
-
 ## Built With
 * [Java 17](https://docs.oracle.com/en/java/javase/17/) - Programming language
 * [Spring-Boot](http://spring.io/projects/spring-boot) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
 
-
 ## Versioning
 * [Git](https://git-scm.com/)
-
 
 ## Authors
 * **Manaila Catalin-Stefan** - https://github.com/CatalinStefan11/RockPapperScissors

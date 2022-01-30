@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "989027e6-2c0f-4838-8e83-7011d9fef33e",
+		"name": "PlayerVsPlayer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create first player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/player/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create second player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/player/Messi",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"Messi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/create-game/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"create-game",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Accept invite",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/accept-invite/1644053131381/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accept-invite",
+						"1644053131381",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "First player ready",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/ready-player/Ronaldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ready-player",
+						"Ronaldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Second player ready",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/ready-player/Messi",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ready-player",
+						"Messi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get result",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete player (cascade delete)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/player/Messi",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"Messi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Play first turn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"playerName\":\"Ronaldo\",\r\n    \"sessionCode\":\"1644211398711\",\r\n    \"move\":\"paper\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/play",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Play second turn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"playerName\":\"Messi\",\r\n    \"sessionCode\":\"1644211398711\",\r\n    \"move\":\"paper\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/play",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
