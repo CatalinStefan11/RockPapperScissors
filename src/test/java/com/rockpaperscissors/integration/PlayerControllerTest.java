@@ -32,78 +32,69 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class PlayerControllerTest {
 
+    @Autowired
+    private MockMvc mockMvc;
+
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeAll
-    static void init(){
+    static void init() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         mapper.registerModule(new JavaTimeModule());
         mapper.setDateFormat(df);
 
     }
 
-
-    @Autowired
-    private MockMvc mockMvc;
-
     @Test
     public void createPlayer_withSuccess() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .post("/player/Catalin")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .post("/player/Catalin"))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andReturn();
 
         Player player = mapper.readValue(storyResult.getResponse().getContentAsString(), Player.class);
 
-        assertEquals("Players not equal" , "Catalin", player.getPlayerName());
+        assertEquals("Players not equal", "Catalin", player.getPlayerName());
     }
 
     @Test
-    @Sql("/sql/insertPlayer.sql")
+    @Sql("/sql/insertPlayer2.sql")
     public void createPlayer_alreadyExists() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .post("/player/Ronaldo")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .post("/player/Iniesta"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
         ClientError error = mapper.readValue(storyResult.getResponse().getContentAsString(), ClientError.class);
 
-        assertEquals("Player already exists" , 400, error.getStatus());
+        assertEquals("Player already exists", 400, error.getStatus());
     }
 
     @Test
-    @Sql("/sql/insertPlayer.sql")
+    @Sql("/sql/insertPlayer2.sql")
     public void readyPlayer() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .put("/ready-player/Ronaldo")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .put("/ready-player/Iniesta"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
 
         Player player = mapper.readValue(storyResult.getResponse().getContentAsString(), Player.class);
 
-        assertEquals("Player states not equal" , Player.PlayerState.READY, player.getCurrentState());
+        assertEquals("Player states not equal", Player.PlayerState.READY, player.getCurrentState());
     }
 
 
     @Test
-    @Sql("/sql/insertPlayer.sql")
+    @Sql("/sql/insertPlayer2.sql")
     public void deletePlayer() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .delete("/player/Ronaldo")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .delete("/player/Iniesta"))
                 .andExpect(status().isNoContent())
                 .andDo(print())
                 .andReturn();
@@ -114,34 +105,30 @@ public class PlayerControllerTest {
     public void deletePlayer_NotFound() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .delete("/player/Ronaldo")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .delete("/player/Ronaldo"))
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
 
         ClientError error = mapper.readValue(storyResult.getResponse().getContentAsString(), ClientError.class);
 
-        assertEquals("Player is present" , 404, error.getStatus());
+        assertEquals("Player is present", 404, error.getStatus());
 
     }
 
     @Test
-    @Sql("/sql/insertPlayer.sql")
+    @Sql("/sql/insertPlayer2.sql")
     public void getPlayer() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .get("/player/Ronaldo")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .get("/player/Iniesta"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
 
         Player player = mapper.readValue(storyResult.getResponse().getContentAsString(), Player.class);
 
-        assertNotNull("Player is null" , player);
+        assertNotNull("Player is null", player);
 
     }
 
@@ -149,17 +136,14 @@ public class PlayerControllerTest {
     public void getPlayer_notFound() throws Exception {
 
         MvcResult storyResult = mockMvc.perform(MockMvcRequestBuilders
-                .get("/player/Ronaldo")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Arrays.toString(new Byte[0])))
+                .get("/player/Ronaldo"))
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
 
         ClientError error = mapper.readValue(storyResult.getResponse().getContentAsString(), ClientError.class);
 
-        assertEquals("Player is present" , 404, error.getStatus());
-
+        assertEquals("Player is present", 404, error.getStatus());
     }
 
 

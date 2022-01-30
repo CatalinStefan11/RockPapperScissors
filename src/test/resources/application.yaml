@@ -13,7 +13,7 @@ spring:
     init:
       mode: always
   profiles:
-    active: PlayerVsPlayer
+    active: PlayerVsComputer
 
 logging:
   level:

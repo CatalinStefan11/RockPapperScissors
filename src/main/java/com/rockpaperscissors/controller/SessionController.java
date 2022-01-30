@@ -25,8 +25,8 @@ public class SessionController {
     }
 
     @PostMapping(value = "/create-game/{playerName}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameSession> createSession(@PathVariable("playerName") String inviter) {
-        Player player = playerService.getPlayer(inviter);
+    public ResponseEntity<GameSession> createSession(@PathVariable("playerName") String invite) {
+        Player player = playerService.getPlayer(invite);
         return new ResponseEntity<>(sessionService.createSessionFromInvite(new Invite(player)),
                 HttpStatus.CREATED);
     }

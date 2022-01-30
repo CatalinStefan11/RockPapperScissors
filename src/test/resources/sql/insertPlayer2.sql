@@ -1,0 +1,1 @@
+INSERT INTO players (id, player_name, current_state) VALUES (100, 'Iniesta', 'WAITING');
